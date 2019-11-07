@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<image arch="armv7l">
+  <partition aft_fstype="None" cpioopts="None" exclude_image="None" extopts="None" fslabel="boot" fsopts="defaults,noatime" fstype="ext4" init_expand="False" kspart="part /boot --active --fstype=&quot;ext4&quot; --ondisk=mmcblk0 --size=50 --bytes-per-inode=4096 --fsoptions=&quot;defaults,noatime&quot; --label=boot --uuid=eca95e1a-9dcb-4590-9e62-f6c19d20dd31
+" label="boot" mountpoint="/boot" name="boot.img" no_shrink="False" size="50" squashfsopts="None" uuid="None" vdfsopts="None"/>
+  <partition aft_fstype="None" cpioopts="None" exclude_image="None" extopts="None" fslabel="modules" fsopts="defaults,noatime" fstype="ext4" init_expand="False" kspart="part /lib/modules --active --fstype=&quot;ext4&quot; --ondisk=mmcblk0 --size=50 --bytes-per-inode=4096 --fsoptions=&quot;defaults,noatime&quot; --label=modules --uuid=57ef75a0-e744-4d76-b680-dbd75f4d17c7
+" label="modules" mountpoint="/lib/modules" name="modules.img" no_shrink="False" size="50" squashfsopts="None" uuid="None" vdfsopts="None"/>
+</image>

@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<image arch="armv7l">
+  <partition aft_fstype="None" cpioopts="None" exclude_image="None" extopts="-J size=16" fslabel="rootfs" fsopts="defaults,noatime" fstype="ext4" init_expand="False" kspart="part / --fstype=&quot;ext4&quot; --ondisk=mmcblk0 --size=2048 --bytes-per-inode=4096 --fsoptions=&quot;defaults,noatime&quot; --label=rootfs --extoptions=-J size=16 --uuid=21bbb4b4-6ad5-4d7f-82ac-a48752d2c31f
+" label="rootfs" mountpoint="/" name="rootfs.img" no_shrink="False" size="2048" squashfsopts="None" uuid="None" vdfsopts="None"/>
+  <partition aft_fstype="None" cpioopts="None" exclude_image="None" extopts="-b 1024" fslabel="ramdisk" fsopts="None" fstype="ext4" init_expand="False" kspart="part /mnt/initrd --fstype=&quot;ext4&quot; --ondisk=mmcblk0p --size=7 --bytes-per-inode=4096 --label=ramdisk --extoptions=-b 1024 --uuid=e8dd9a8f-9d53-4442-8f06-b3eb2443829f
+" label="ramdisk" mountpoint="/mnt/initrd" name="ramdisk.img" no_shrink="False" size="7" squashfsopts="None" uuid="None" vdfsopts="None"/>
+  <partition aft_fstype="None" cpioopts="None" exclude_image="None" extopts="-b 1024 -O ^has_journal" fslabel="ramdisk-recovery" fsopts="None" fstype="ext4" init_expand="False" kspart="part /mnt/initrd-recovery --fstype=&quot;ext4&quot; --ondisk=mmcblk0p --size=12 --bytes-per-inode=4096 --label=ramdisk-recovery --extoptions=-b 1024 -O ^has_journal --uuid=0c1cb4ad-464c-4b89-ae82-fc3ff92f194f
+" label="ramdisk-recovery" mountpoint="/mnt/initrd-recovery" name="ramdisk-recovery.img" no_shrink="False" size="12" squashfsopts="None" uuid="None" vdfsopts="None"/>
+  <partition aft_fstype="None" cpioopts="None" exclude_image="None" extopts="-m 0" fslabel="system-data" fsopts="defaults,noatime" fstype="ext4" init_expand="False" kspart="part /opt --fstype=&quot;ext4&quot; --ondisk=mmcblk0 --size=1024 --bytes-per-inode=4096 --fsoptions=&quot;defaults,noatime&quot; --label=system-data --extoptions=-m 0 --uuid=4f6520c3-5920-4b14-899e-e61475aea696
+" label="system-data" mountpoint="/opt" name="system-data.img" no_shrink="False" size="1024" squashfsopts="None" uuid="None" vdfsopts="None"/>
+  <partition aft_fstype="None" cpioopts="None" exclude_image="None" extopts="-m 0" fslabel="user" fsopts="defaults,noatime" fstype="ext4" init_expand="False" kspart="part /opt/usr --fstype=&quot;ext4&quot; --ondisk=mmcblk0 --size=3500 --bytes-per-inode=4096 --fsoptions=&quot;defaults,noatime&quot; --label=user --extoptions=-m 0 --uuid=f9e4ca81-eafd-4e89-a30b-0ec56d4e92d9
+" label="user" mountpoint="/opt/usr" name="user.img" no_shrink="False" size="3500" squashfsopts="None" uuid="None" vdfsopts="None"/>
+</image>

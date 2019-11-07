@@ -1,0 +1,155 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Anchor3 Tizen Project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* Github : https://github.com/dignsys?tab=projects
+  Project : Anchor3-Tizen
+	-> linking 16 repositories for this project.
+
+* Anchor3 Boot Package
+	- firmwares-anchor3 : firmwares for Anchor3 target BL1,BL2,BL32
+	- u-boot-anchor3 : u-boot source for Anchor3
+	- linux-anchor3 : linux kernel for Anchor3
+	- tools-anchor3 : tools for Anchor3 build
+	- boot-firmwares-anchor3 : binary files for booting Anchor3
+
+* Anchor3 Tizen Package
+	- building-blocks : building-blocks for Anchor Tizen porting
+	- systemd : systemd porting for Anchor Tizen
+	- device-manager-plugin-anchor : device manager plugin for Anchor Tizen porting
+	- peripheral-bus : peripheral bus porting for Anchor Tizen
+	- peripheral-io : peripheral IO porting for Anchor Tizen
+	- bluetooth-firmware-bcm : Bluetooth firmware for Anchor with BCM4335(AP6335)
+	- wlandrv-plugin-tizen-ap6335 : WLAN driver plugin for Anchor Tizen porting with AP6335
+	- alsa-ucm-data-alc5623 : Anchor ALSA device data
+	- audio-hal-alc5623 : Audio HAL for Anchor with ALC5623 Codec
+	- mmfw-sysconf : Multimedia firmware for Anchor Tizen porting
+	- libtbm-nexell-anchor3 : TBM library for NXP322x
+	- smartthing-plugin : tizen smartthing-plugin project  (only for smartthings with iotivity)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Steps to build & install Anchor3 Tizen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. Downlaod Anchor3 Tizen Package
+	- Directory : ~/Tizen-Work
+	- Private : hbahn@dignsys.com
+
+2. Download Anchor3 Boot Package
+	- Directory : ~/Tizen-Work-boot
+	- Private : hbahn@dignsys.com
+
+3. build Tizen package by gbs
+	-  Required : .gbsAnchor3.conf (on tools-anchor3/files/)
+
+4. create Tizen image by mic
+	-  Required : tizen-unified_iot-headless-2parts-armv7l-anchor3.ks (on tools-anchor3/files/)
+
+5. build Tizen boot package by gbs
+	-  Required : .gbsAnchor3.conf (on tools-anchor3/files/)
+
+6. create Tizen boot image by mic
+	-  Required : tizen-unified_iot-boot-armv7l-anchor3.ks (on tools-anchor3/files/)
+
+7. Copy binary & package to Tizen-Work-boot/result
+	- Tizen packages(copy after build) : 
+		boot.img modules.img, rootfs.img, system-date.img 
+	- Boot binaries(copy from boot package or from boot-firmwares-anchor3/files/)
+		bl1-nxp3220.bin.raw, bl2-anchor3.bin.raw, bl2.bin.raw, bl32.bin.raw, u-boot.bin.raw
+		params_env.bin
+
+8. Install Tizen package by fastboot
+	- Required :
+		tools-anchor3/scripts/partmap_fastboot.sh
+		tools-anchor3/files/partmap_anchor3_tizen_emmc.txt
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Practice build & install Anchor3 Tizen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1. Downlaod Anchor3 Tizen Package
+	$ mkdir ~/Tizen-Work
+	$ cd ~/Tizen-Work
+
+	$ git clone https://github.com/dignsys/building-blocks.git
+	$ git clone https://github.com/dignsys/systemd.git
+	$ git clone https://github.com/dignsys/device-manager-plugin-anchor.git
+	$ git clone https://github.com/dignsys/peripheral-bus.git
+	$ git clone https://github.com/dignsys/peripheral-io.git
+	$ git clone https://github.com/dignsys/bluetooth-firmware-bcm.git
+	$ git clone https://github.com/dignsys/wlandrv-plugin-tizen-ap6335.git
+	$ git clone https://github.com/dignsys/alsa-ucm-data-alc5623.git
+	$ git clone https://github.com/dignsys/audio-hal-alc5623.git
+	$ git clone https://github.com/dignsys/libtbm-nexell-anchor3.git
+	$ git clone https://github.com/dignsys/mmfw-sysconf.git
+
+2. Download Anchor3 Boot Package
+	$ mkdir ~/Tizen-Work-boot
+	$ cd ~/Tizen-Work-boot
+
+	$ git clone https://github.com/dignsys/firmwares-anchor3.git
+	$ git clone https://github.com/dignsys/u-boot-anchor3.git
+	$ git clone https://github.com/dignsys/linux-anchor3.git
+	$ git clone https://github.com/dignsys/tools-anchor3.git
+	$ git clone https://github.com/dignsys/boot-firmwares-anchor3.git
+
+3. build Tizen package by gbs
+	$ cd ~/Tizen-Work
+	$ cp ~/Tizen-Work-boot/tools-anchor3/files/gbsAnchor3.conf .gbsAnchor3.conf
+	$ gbs -c ~/.gbsAnchor3.conf build -A armv7l --include-all --thread=4
+
+4. create Tizen image by mic
+	$ cd ~/Tizen-Work
+	$ cp ~/Tizen-Work-boot/tools-anchor3/files/tizen-unified_iot-headless-2parts-armv7l-anchor3.ks .
+
+    *** for 2 part headless : only for IoT
+	$ sudo mic cr loop tizen-unified_iot-headless-2parts-armv7l-anchor3.ks --pack-to=tizen-unified_iot-headless-2parts-armv7l-anchor3.tar.gz --logfile=mic_build.log -A armv7l
+
+    *** for 3 part headless (include user data to /opt/usr) : IoT + something else
+	$ sudo mic cr loop tizen-unified_iot-headless-3parts-armv7l-anchor3.ks --pack-to=tizen-unified_iot-headless-3parts-armv7l-anchor3.tar.gz --logfile=mic_build.log -A armv7l
+
+5. build Tizen boot package by gbs
+	$ cd ~/Tizen-Work-boot
+	$ cp ~/Tizen-Work-boot/tools-anchor3/files/gbsAnchor3.conf .gbsAnchor3.conf	<=== if you have, you can skip this step
+	$ gbs -c ~/.gbsAnchor3.conf build -A armv7l --include-all --thread=4
+
+6. create Tizen boot image by mic
+	$ cd ~/Tizen-Work-boot
+	$ cp ~/Tizen-Work-boot/tools-anchor3/files/tizen-unified_iot-boot-armv7l-anchor3.ks .
+	$ sudo mic cr loop tizen-unified_iot-boot-armv7l-anchor3.ks --pack-to=tizen-unified_iot-boot-armv7l-anchor3.tar.gz --logfile=mic_build.log -A armv7l
+
+7. Copy binary & package to Tizen-Work-boot/result
+	$ cd ~/Tizen-Work-boot
+	$ mkdir -p result
+
+	$ cd ~/Tizen-Work/mic-output
+	$ tar zxvf tizen-unified_iot-headless-2parts-armv7l-anchor3.tar.gz
+	$ mv *.img ~/Tizen-Work-boot/result
+
+	$ cd ~/Tizen-Work-boot/mic-output
+	$ tar zxvf ../tizen-unified_iot-boot-armv7l-anchor3.tar.gz 
+	$ mv *.img ~/Tizen-Work-boot/result
+	$ mv *.raw ~/Tizen-Work-boot/result
+	$ mv params_env.bin ~/Tizen-Work-boot/result
+
+    *** if you change ramdisk, you must create ramdisk image : 2 part headless / 3 part headless
+	- Create RAMDISK : the ramdisk.img located on Tizen build package (only for new ramdisk)
+		mkimage -A arm -O linux -T ramdisk -C none -a 0 -e 0 -n uInitrd -d ramdisk.img uInitrd 
+
+8. Install Tizen package by fastboot
+   [ on the Anchor3 target u-boot onsole : press any key after reset or power on ]
+	anchor3# fastboot
+	FASTBOOT [Google] Wait for download ...
+
+   [ host linux ]
+	$ cd ~/Tizen-Work-boot/
+	$ ./tools-anchor3/scripts/partmap_fastboot.sh -f tools-anchor3/files/partmap_anchor3_tizen_emmc.txt -d result
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+install Anchor3 Pre-built Tizen image
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   [ on the Anchor3 target u-boot onsole : press any key after reset or power on ]
+	anchor3# fastboot
+	FASTBOOT [Google] Wait for download ...
+
+   [ host linux ]
+	$ cd ~/Tizen-Work-boot/
+	$ ./tools-anchor3/scripts/partmap_fastboot.sh -f tools-anchor3/files/partmap_anchor3_tizen_emmc.txt -d result
